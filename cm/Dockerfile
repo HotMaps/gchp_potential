@@ -2,102 +2,38 @@
 # hotmaps/cm image Dockerfile
 #
 #
+FROM zarch/alpine-grass-gis:grass77_py3_r74118
 
 
-FROM geographica/gdal2:latest
+MAINTAINER Pietro Zambelli <pietro.zambelli@eurac.edu>
 
 
-MAINTAINER lesly Houndole <lesly.houndole@crem.ch>
-
-
-# setup volume
-RUN mkdir -p /data
-VOLUME /data
-
-
-# Build commands
-RUN apt-get update && apt-get dist-upgrade -y && apt-get autoremove -y
-
-# Install required software
-
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y \
-    build-essential \
-    software-properties-common \
-    wget \
-    gdal-bin \
+ENV PACKAGES="\
     ca-certificates \
-    curl \
-    gcc \
-    git \
-    libpq-dev \
-    libgeos-dev \
-    libgdal-dev \
-    python-gdal \
-    make \
-    python-pip \
-    ssh \
-    && apt-get autoremove \
-    && apt-get clean
+    "
 
-
-
-
-# Install / update relevant ubuntu packages:
-#RUN apt-get update \
- #	&& apt-get install -y --no-install-recommends libgmp3-dev
-
-# Download and install glpk:
- #RUN mkdir /usr/local/glpk \
-# 	&& curl http://ftp.gnu.org/gnu/glpk/glpk-4.39.tar.gz \
-# 	| tar xvzC /usr/local/glpk --strip-components=1 \
-# 	&& cd /usr/local/glpk \
-# 	&& ./configure \
-# 	&& make \
-# 	&& make install
-
-
-
-
-
-# Setup app server
-RUN mkdir -p /data
+# Copy app source code
 COPY . /cm
 WORKDIR /cm
 
-RUN ls
+# Add the packages
+RUN echo "Install main packages";\
+    apk update && \
+    apk add --no-cache \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
+            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
+            $PACKAGES && \
+    pip3 install -r requirements.txt && \
+    pip3 install gunicorn && \
+    mkdir -p /data && \
+    mkdir -p /var/log/supervisor;
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y \
-    build-essential \
-    software-properties-common \
-    wget
+# setup volume
+VOLUME /data
 
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python3 get-pip.py
-
-
-RUN pip3 install -r requirements.txt
-RUN pip3 install gunicorn
-
-
-
-# Install required python modules
-
-
-# Copy app source code
-
-
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
-
-# Start server
-
-RUN apt-get update && apt-get install -y supervisor
-RUN mkdir -p /var/log/supervisor
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # CMD ["gunicorn", "--config", "gunicorn-config.py", "--log-config", "app/logging.conf", "run:application"]
 

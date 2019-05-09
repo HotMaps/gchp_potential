@@ -4,13 +4,17 @@ from osgeo import gdal
 from ..helper import generate_output_file_tif, create_zip_shapefiles
 import time
 
+
+from grass_session import Session
+
+
 """ Entry point of the calculation module function"""
 
 #TODO: CM provider must "change this code"
 #TODO: CM provider must "not change input_raster_selection,output_raster  1 raster input => 1 raster output"
 #TODO: CM provider can "add all the parameters he needs to run his CM
 #TODO: CM provider can "return as many indicators as he wants"
-def calculation(output_directory, inputs_raster_selection,inputs_vector_selection, inputs_parameter_selection):
+def calculation(output_directory, inputs_raster_selection, inputs_vector_selection, inputs_parameter_selection):
     #TODO the folowing code must be changed by the code of the calculation module
 
     # generate the output raster file
