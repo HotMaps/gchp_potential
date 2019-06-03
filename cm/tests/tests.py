@@ -158,5 +158,6 @@ class TestAPI(unittest.TestCase):
 #        self.assertTrue(rv.status_code == 200)
 
 if __name__ == "__main__":
- #   ipdb.set_trace()
-    TestAPI.test_compute('test')
+    import doctest
+    doctest.testmod()
+    #TestAPI.test_compute('test')
