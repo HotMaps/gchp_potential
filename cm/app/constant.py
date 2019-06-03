@@ -5,7 +5,7 @@ CELERY_BROKER_URL_LOCAL = 'amqp://localhost/'
 
 CM_REGISTER_Q = 'rpc_queue_CM_register' # Do no change this value
 
-CM_NAME = 'calculation_module_test'
+CM_NAME = 'GSHP potential'
 RPC_CM_ALIVE= 'rpc_queue_CM_ALIVE' # Do no change this value
 RPC_Q = 'rpc_queue_CM_compute' # Do no change this value
 CM_ID = 1 # CM_ID is defined by the enegy research center of Martigny (CREM)
@@ -23,7 +23,7 @@ TRANFER_PROTOCOLE ='http://'
 INPUTS_CALCULATION_MODULE = [
     {'input_name': 'Heating Season [0-365] expressed in days',
      'input_type': 'input',
-     'input_parameter_name': 'reduction_factor',
+     'input_parameter_name': 'heating_season_value',
      'input_value': 180,
      'input_priority': 0,
      'input_unit': 'd',
@@ -34,23 +34,23 @@ INPUTS_CALCULATION_MODULE = [
     {'input_name': 'Depth-Averaged Ground Thermal Capacity ρc',
      'input_type': 'input',
      'input_parameter_name': 'ground_capacity_value',
-     'input_value': 50,
+     'input_value': 2,
      'input_priority': 1,
      'input_unit': 'MJ m-3 K-1',
      'input_min': 1.,
      'input_max': 4.,
      'cm_id': CM_ID  # Do no change this value
      },
-    {'input_name': 'Value with the initial ground temperature T0 [°C]',
-     'input_type': 'input',
-     'input_parameter_name': 'ground_temp_value',
-     'input_value': 9.,
-     'input_priority': 1,
-     'input_unit': '°C',
-     'input_min': 0.,
-     'input_max': 25., 
-     'cm_id': CM_ID  # Do no change this value
-     },    
+#    {'input_name': 'Value with the initial ground temperature T0 [°C]',
+#     'input_type': 'input',
+#     'input_parameter_name': 'ground_temp_value',
+#     'input_value': 9.,
+#     'input_priority': 1,
+#     'input_unit': '°C',
+#     'input_min': 0.,
+#     'input_max': 25., 
+#     'cm_id': CM_ID  # Do no change this value
+#     },    
     {'input_name': 'Borehole radius',
      'input_type': 'input',
      'input_parameter_name': 'borehole_radius',
@@ -64,7 +64,7 @@ INPUTS_CALCULATION_MODULE = [
     {'input_name': 'Borehole thermal resistence',
      'input_type': 'input',
      'input_parameter_name': 'borehole_resistence',
-     'input_value': "nan",
+     'input_value': None,
      'input_priority': 1,
      'input_unit': 'm KW-1',
      'input_min': 0.06,
@@ -146,15 +146,16 @@ SIGNATURE = {
         "land_surface_temperature",
     ],
     "type_layer_needed": [
-        "land_surface_temperature",
-        "thermomap"
+        "land_surface_temperature"
     ],
     "vectors_needed": [
         "thermomap"
     ],
     "cm_url": "Do not add something",
-    "cm_description": "This computation aims to compute the Ground Source"
+    "cm_description": "This module aims to compute the Ground Source"
                       "Heat Pump (GSHP) potential of a selected area."
+                      "It is based on the GRASS-GISS module "
+                      "r.green.gshp.theoretical."
                       "The code is on Hotmaps Github group and has" 
                       " been developed by EURAC",
     "cm_id": CM_ID,
