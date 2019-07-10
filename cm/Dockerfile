@@ -38,6 +38,6 @@ EXPOSE 80
 # CMD ["gunicorn", "--config", "gunicorn-config.py", "--log-config", "app/logging.conf", "run:application"]
 
 # Start processes
-CMD ["/usr/bin/supervisord"]
+CMD ["/cm/wait-for-it.sh","rabbit:5672","--strict","--timeout=360","--","/usr/bin/supervisord"]
 
 
