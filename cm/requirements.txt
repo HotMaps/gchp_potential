@@ -10,9 +10,12 @@ amqp
 coverage
 flasgger
 flask
+gdal
+grass-session
 gunicorn
 httpie
 itsdangerous
+matplotlib
 python-dateutil
 requests
 six
