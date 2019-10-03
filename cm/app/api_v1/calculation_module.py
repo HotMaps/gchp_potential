@@ -1,6 +1,6 @@
-
 from osgeo import gdal
 from ..helper import generate_output_file_tif, create_zip_shapefiles
+from ..constant import CM_NAME
 import time
 import warnings
 import os
@@ -73,6 +73,7 @@ def calculation(output_directory, inputs_raster_selection,
     grass_data = f.create_grass_data(grass_data = grass_data,
                                      factor = factor)
     
+
     
     f.grass_compute_potential(grass_data = grass_data,
                               gisdb = PATH,
@@ -104,9 +105,10 @@ def calculation(output_directory, inputs_raster_selection,
     #TODO to create zip from shapefile use create_zip_shapefiles from the helper before sending result
     #TODO exemple  output_shpapefile_zipped = create_zip_shapefiles(output_directory, output_shpapefile)
     result = dict()
-    result['name'] = 'GSHP potential'
-    #result['indicator'] = [{"unit": "KWh", "name": "Heat density total divided by  {}".format(factor),"value": str(hdm_sum)}]
+    result['name'] = CM_NAME
+    #result['indicator'] = [{"unit": "GWh", "name": "Heat density total multiplied by  {}".format(factor),"value": str(hdm_sum)}]
     #result['graphics'] = graphics
     #result['vector_layers'] = vector_layers
     result['raster_layers'] = res
+    print ('result',result)
     return result

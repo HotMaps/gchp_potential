@@ -2,11 +2,7 @@
 # hotmaps/cm image Dockerfile
 #
 FROM mundialis/grass-py3-pdal
-
-
 MAINTAINER Pietro Zambelli <pietro.zambelli@eurac.edu>
-
-
 ENV PACKAGES="\
     ca-certificates \
     " \
@@ -18,9 +14,7 @@ RUN mkdir -p /cm && \
     mkdir -p /var/log/supervisor
 
 COPY . /cm
-
 WORKDIR /cm
-
 
 # Add the packages
 RUN echo "Install main packages";\
@@ -35,9 +29,7 @@ VOLUME /data
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
-
 # Start processes
 CMD ["/usr/bin/supervisord"]
-
 
 
