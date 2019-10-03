@@ -1,8 +1,7 @@
 #
 # hotmaps/cm image Dockerfile
 #
-#
-FROM zarch/alpine-grass-gis:grass77_py3_r74118
+FROM mundialis/grass-py3-pdal
 
 
 MAINTAINER Pietro Zambelli <pietro.zambelli@eurac.edu>
@@ -10,23 +9,25 @@ MAINTAINER Pietro Zambelli <pietro.zambelli@eurac.edu>
 
 ENV PACKAGES="\
     ca-certificates \
-    "
+    " \
+    GRASSBIN="grass78"
 
-# Copy app source code
+# Create main directories
+RUN mkdir -p /cm && \
+    mkdir -p /data && \
+    mkdir -p /var/log/supervisor
+
 COPY . /cm
+
 WORKDIR /cm
+
 
 # Add the packages
 RUN echo "Install main packages";\
-    apk update && \
-    apk add --no-cache \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing \
-            --repository http://dl-cdn.alpinelinux.org/alpine/edge/main \
-            $PACKAGES && \
-    pip3 install -r requirements.txt && \
-    pip3 install gunicorn && \
-    mkdir -p /data && \
-    mkdir -p /var/log/supervisor;
+    apt-get update && \
+    apt-get upgrade --yes && \
+    apt-get install python3-pip python3-gdal --yes && \
+    python3 -m pip install -r requirements.txt
 
 # setup volume
 VOLUME /data
@@ -35,9 +36,8 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 EXPOSE 80
 
-# CMD ["gunicorn", "--config", "gunicorn-config.py", "--log-config", "app/logging.conf", "run:application"]
-
 # Start processes
 CMD ["/usr/bin/supervisord"]
+
 
 
