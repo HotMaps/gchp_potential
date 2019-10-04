@@ -6,7 +6,7 @@ import os
 from app import create_app
 import os.path
 from shutil import copyfile
-#from .test_client import TestClient
+from .test_client import TestClient
 from app.constant import INPUTS_CALCULATION_MODULE
 from app.api_v1.my_calculation_module_directory.input_data_function import PATH
 from app.api_v1.my_calculation_module_directory.functions import function_CM as f
