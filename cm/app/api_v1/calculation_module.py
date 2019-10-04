@@ -1,6 +1,5 @@
 from osgeo import gdal
 from ..helper import generate_output_file_tif, create_zip_shapefiles
-from ..constant import CM_NAME
 import time
 import warnings
 import os
@@ -110,5 +109,3 @@ def calculation(output_directory, inputs_raster_selection,
     #result['graphics'] = graphics
     #result['vector_layers'] = vector_layers
     result['raster_layers'] = res
-    print ('result',result)
-    return result
