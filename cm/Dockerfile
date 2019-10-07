@@ -20,9 +20,10 @@ WORKDIR /cm
 RUN echo "Install main packages";\
     apt-get update && \
     apt-get upgrade --yes && \
-    $GRASSBIN --tmp-location EPSG:4623 --exec g.extension extension=r.green operation=add && \
     apt-get install python3-pip python3-gdal --yes && \
-    python3 -m pip install -r requirements.txt
+    python3 -m pip install -r requirements.txt && \
+    $GRASSBIN --tmp-location EPSG:4623 --exec g.extension extension=r.green operation=add
+
 
 # setup volume
 VOLUME /data

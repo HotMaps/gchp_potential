@@ -16,8 +16,11 @@ gunicorn
 httpie
 itsdangerous
 matplotlib
+numpy>=1.15
+numexpr
 python-dateutil
+pyyaml
 requests
+scipy
 six
 supervisor
-
