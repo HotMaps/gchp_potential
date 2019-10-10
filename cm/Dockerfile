@@ -1,7 +1,7 @@
 #
 # hotmaps/cm image Dockerfile
 #
-FROM mundialis/grass-py3-pdal
+FROM hotmaps/grass-py3-pdal:7.8
 MAINTAINER Pietro Zambelli <pietro.zambelli@eurac.edu>
 ENV PACKAGES="\
     ca-certificates \
