@@ -21,6 +21,7 @@ RUN echo "Install main packages";\
     apt-get update && \
     apt-get upgrade --yes && \
     apt-get install python3-pip python3-gdal --yes && \
+    python3 -m pip install wheel && \
     python3 -m pip install -r requirements.txt && \
     $GRASSBIN --tmp-location EPSG:4623 --exec g.extension extension=r.green operation=add
 
