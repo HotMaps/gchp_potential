@@ -28,7 +28,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 0,
      'input_unit': 'd',
      'input_min': 30,
-     'input_max': 365, 
+     'input_max': 365,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Depth-Averaged Ground Thermal Capacity ρc',
@@ -48,9 +48,9 @@ INPUTS_CALCULATION_MODULE = [
 #     'input_priority': 1,
 #     'input_unit': '°C',
 #     'input_min': 0.,
-#     'input_max': 25., 
+#     'input_max': 25.,
 #     'cm_id': CM_ID  # Do no change this value
-#     },    
+#     },
     {'input_name': 'Borehole radius',
      'input_type': 'input',
      'input_parameter_name': 'borehole_radius',
@@ -58,9 +58,9 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 1,
      'input_unit': 'm',
      'input_min': 0.05,
-     'input_max': 0.10, 
+     'input_max': 0.10,
      'cm_id': CM_ID  # Do no change this value
-     },  
+     },
     {'input_name': 'Borehole thermal resistence',
      'input_type': 'input',
      'input_parameter_name': 'borehole_resistence',
@@ -68,7 +68,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 1,
      'input_unit': 'm KW-1',
      'input_min': 0.06,
-     'input_max': 0.12, 
+     'input_max': 0.12,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Borehole length',
@@ -78,7 +78,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 1,
      'input_unit': 'm',
      'input_min': 0.,
-     'input_max': 99999999., 
+     'input_max': 99999999.,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Pipe radius',
@@ -88,7 +88,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 1,
      'input_unit': 'm',
      'input_min': 0.001,
-     'input_max': 0.05, 
+     'input_max': 0.05,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Number of pipes in the borehole',
@@ -98,7 +98,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_priority': 1,
      'input_unit': '-',
      'input_min': 1,
-     'input_max': 999999, 
+     'input_max': 999999,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Thermal conductivity of the borehole filling (geothermal grout)',
@@ -109,7 +109,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_unit': 'W m-1 °K-1',
      'input_min': 1,
      #TODO: check "input_max"
-     'input_max': 999999, 
+     'input_max': 999999,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Minimum or maximum fluid temperature',
@@ -120,7 +120,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_unit': '°C',
      #TODO: check "input_min" and "input_max"
      'input_min': -5,
-     'input_max': 999999, 
+     'input_max': 999999,
      'cm_id': CM_ID  # Do no change this value
      },
     {'input_name': 'Simulated lifetime of the plant',
@@ -131,7 +131,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_unit': 'years',
      #TODO: check "input_min" and "input_max"
      'input_min': 1,
-     'input_max': 999999, 
+     'input_max': 999999,
      'cm_id': CM_ID  # Do no change this value
      }
 ]
@@ -139,7 +139,7 @@ INPUTS_CALCULATION_MODULE = [
 
 SIGNATURE = {
 
-    "category": "Buildings",
+    "category": "Supply",
     "authorized_scale":["NUTS 2","NUTS 0","Hectare"],
     "cm_name": CM_NAME,
     "layers_needed": [
@@ -156,7 +156,7 @@ SIGNATURE = {
                       "Heat Pump (GSHP) potential of a selected area."
                       "It is based on the GRASS-GISS module "
                       "r.green.gshp.theoretical."
-                      "The code is on Hotmaps Github group and has" 
+                      "The code is on Hotmaps Github group and has"
                       " been developed by EURAC",
     "cm_id": CM_ID,
     'inputs_calculation_module': INPUTS_CALCULATION_MODULE
