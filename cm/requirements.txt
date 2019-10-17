@@ -2,7 +2,7 @@ Flask-HTTPAuth
 Flask-SQLAlchemy
 Jinja2
 MarkupSafe
-Pika
+Pika==0.12.0
 Pygments
 SQLAlchemy
 Werkzeug
