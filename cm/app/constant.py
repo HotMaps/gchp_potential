@@ -146,7 +146,7 @@ SIGNATURE = {
         "land_surface_temperature",
     ],
     "type_layer_needed": [
-        {"type": "land_surface_temperature", "description": "You can choose the layer of type 'land_surface_temperature'."}
+        {"type": "land_surface_temperature"}
     ],
     "vectors_needed": [
         "thermomap"
