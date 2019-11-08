@@ -149,7 +149,7 @@ SIGNATURE = {
         {"type": "land_surface_temperature"}
     ],
     "vectors_needed": [
-        "thermomap"
+        "shallow_geothermal_potential"
     ],
     "cm_url": "Do not add something",
     "cm_description": "This module aims to compute the Ground Source"
