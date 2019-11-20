@@ -3,10 +3,13 @@ from ..helper import generate_output_file_tif, create_zip_shapefiles
 import time
 import warnings
 import os
+import secrets
+import shutil
 import numpy as np
 
 from .my_calculation_module_directory.input_data_function import PATH
 from .my_calculation_module_directory.functions import function_CM as f
+from ..constant import CM_NAME
 
 
 """ Entry point of the calculation module function"""
@@ -16,7 +19,7 @@ from .my_calculation_module_directory.functions import function_CM as f
 #TODO: CM provider can "add all the parameters he needs to run his CM
 #TODO: CM provider can "return as many indicators as he wants"
 def calculation(output_directory, inputs_raster_selection, 
-                inputs_vector_selection, inputs_parameter_selection):
+                inputs_parameter_selection):
     #TODO the folowing code must be changed by the code of the calculation module
     
     """
@@ -29,19 +32,21 @@ def calculation(output_directory, inputs_raster_selection,
     # genereta folder for GRASS computations
     f.create_gis_db(path = PATH)
     
-    pid = os.getpid()
-    loc = "tmp_%i" % pid
-    
-    
+    # create a unique token => location for each request to avoid
+    # that a second user overwrite the input of a first user with
+    # a cocurrent work
+    tok = secrets.token_urlsafe(8)
+    loc = f"tmp_{tok}"
 
     #retrieve the raster inputs layes
     rasters = {
-            "ground_temp_raster" : inputs_raster_selection["land_surface_temperature"]
+            "ground_temp_raster" : inputs_raster_selection["land_surface_temperature"],
+            "ground_conductivity" : inputs_raster_selection["ground_conductivity"]
             }
     
     #retrieve the inputs layes
     vectors = {
-            "termomap": inputs_vector_selection["thermomap"]
+            # "termomap": inputs_vector_selection["thermomap"]
             }
 
     #retrieve the inputs all input defined in the signature
@@ -101,11 +106,10 @@ def calculation(output_directory, inputs_raster_selection,
              "symbology": symbology
              }]
 
-    #TODO to create zip from shapefile use create_zip_shapefiles from the helper before sending result
-    #TODO exemple  output_shpapefile_zipped = create_zip_shapefiles(output_directory, output_shpapefile)
     result = dict()
     result['name'] = CM_NAME
-    #result['indicator'] = [{"unit": "GWh", "name": "Heat density total multiplied by  {}".format(factor),"value": str(hdm_sum)}]
-    #result['graphics'] = graphics
-    #result['vector_layers'] = vector_layers
     result['raster_layers'] = res
+    
+    # remove grass gis directory
+    shutil.rmtree(os.path.join(PATH, loc))
+    return result
