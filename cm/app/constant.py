@@ -66,7 +66,7 @@ INPUTS_CALCULATION_MODULE = [
      'input_parameter_name': 'borehole_resistence',
      'input_value': None,
      'input_priority': 1,
-     'input_unit': 'm KW-1',
+     'input_unit': 'm K W-1',
      'input_min': 0.06,
      'input_max': 0.12,
      'cm_id': CM_ID  # Do no change this value
@@ -143,13 +143,14 @@ SIGNATURE = {
     "authorized_scale":["NUTS 3", "NUTS 2", "NUTS 1", "NUTS 0", "LAU 2", "Hectare"],
     "cm_name": CM_NAME,
     "layers_needed": [
-        "land_surface_temperature",
+        "land_surface_temperature", "ground_conductivity",
     ],
     "type_layer_needed": [
-        {"type": "land_surface_temperature"}
-    ],
-    "vectors_needed": [
-        "shallow_geothermal_potential"
+        {"type": "land_surface_temperature",
+         "description": "Ground temperature, the Land Surface Temperature "
+         "(LST) is used as proxy"},
+        {"type": "ground_conductivity",
+         "description": "Ground conductivity [W/m/K]"},
     ],
     "cm_url": "Do not add something",
     "cm_description": "This module aims to compute the Ground Source"
