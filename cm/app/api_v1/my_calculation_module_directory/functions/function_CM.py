@@ -35,26 +35,21 @@ def create_location(gisdb, location, rasters, vectors, grass_data):
        print(gcore.parse_command("g.gisenv", flags="s"))
         
        gcore.run_command("r.import", input = rasters["ground_temp_raster"],
-                          output="ground_temp_raster")   
+                          output="ground_temp_raster")
+       gcore.run_command("r.import", input = rasters["ground_conductivity"],
+                          output="ground_conductivity")
        
-       gcore.run_command("r.mapcalc", overwrite=True, expression= "ground_temp_raster = ground_temp_raster / 10")
-       
-       gcore.run_command("v.import", input = vectors["termomap"],  layer = "thermomap",  output="thermomap")
-       
-       gcore.run_command("v.to.rast" , 
-                        input = "thermomap", 
-                        output = "ground_conductivity",
-                        use = "attr", 
-                        attribute_column= "heat_cond")
-       
+       gcore.run_command("r.mapcalc", overwrite=True, 
+                         expression="ground_temp_raster = "
+                         "ground_temp_raster / 10.")
+
     grass_data["ground_conductivity"] = "ground_conductivity"
     grass_data["ground_temp_raster"] = "ground_temp_raster"
-       
+
     return grass_data   
     
     
 def create_grass_data(grass_data, factor):
-    
     for fac in list(factor.keys()):
         grass_data[fac] = factor[fac]
     
