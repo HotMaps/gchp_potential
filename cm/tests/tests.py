@@ -42,38 +42,28 @@ def load_input():
     return inputs_parameter
 
 
-def load_raster(raster):
+def load_raster():
     """
     Load the raster file for testing
     :return a dictionary with the raster file paths
     """
-    raster_file_path = os.path.join("tests/data/raster", raster)
-    # simulate copy from HTAPI to CM
-    save_path = os.path.join(UPLOAD_DIRECTORY, raster)
-    copyfile(raster_file_path, save_path)
     inputs_raster_selection = {}
-    inputs_raster_selection["ground_temp_raster"] = save_path
+    for rkey, rname in (("land_surface_temperature", "land_surface_temperature.tif"),
+                        ("ground_conductivity", "ground_conductivity.tiff")):
+        raster_lst_path = os.path.join("tests/data/raster", rname)
+        # simulate copy from HTAPI to CM
+        save_path = os.path.join(UPLOAD_DIRECTORY, rname)
+        copyfile(raster_lst_path, save_path)
+        inputs_raster_selection[rkey] = save_path
     return inputs_raster_selection
 
 
-def load_vector(vector):
+def load_vector():
     """
     Load the raster file for testing
     :return a dictionary with the raster file paths
     """
-    
-    vector_file_path = os.path.join("tests/data/vector", vector)
-    # simulate copy from HTAPI to CM
-    
-    path = "tests/data/vector"
-    
-    save_path = os.path.join(UPLOAD_DIRECTORY, vector)
-    for files in os.listdir(os.path.split(vector_file_path)[0]):
-        save_path_shapefile = os.path.join(UPLOAD_DIRECTORY, files)
-        copyfile(os.path.join(path,files), save_path_shapefile)
-    
     inputs_vector_selection = {}
-    inputs_vector_selection["termomap"] = save_path
     return inputs_vector_selection
 
 
@@ -95,67 +85,27 @@ class TestAPI(unittest.TestCase):
 
 
     def test_compute(self):
-        rasters = load_raster(raster="land_surface_temperature.tif")
-        vectors = load_vector(vector="thermomap.shp")
-        
+        rasters = load_raster()
         factor = load_input()
+
+        # register the calculation module a
+        payload = {
+            "inputs_raster_selection": rasters,
+            "inputs_parameter_selection": factor,
+        }
+        rv, json = self.client.post("computation-module/compute/", 
+                                    data=payload)
+        self.assertEqual(rv.status_code, 200)
+        """
+        {'result': {'name': 'CM - Shallow geothermal potential',
+            'raster_layers': [{'name': 'Classified GSHP potential expressed in '
+                                       'MWh/y',
+                               'path': '/var/tmp/713651f0-d29a-46de-8d42-66f541ca7abd.tif',
+
+        """
+        self.assertTrue(json["result"]["raster_layers"][0]["path"].endswith(".tif"))
         
-        grass_data = {
-            "power": "geo_power",
-            "energy": "geo_energy"
-            }
-        f.create_gis_db(path = PATH)
-        pid = os.getpid()
-        loc = "tmp_%i" % pid
-        grass_data = f.create_location(gisdb = PATH,
-                                   location = loc, 
-                                   rasters =  rasters,
-                                   vectors = vectors, 
-                                   grass_data = grass_data)        
-        
-        grass_data = f.create_grass_data(grass_data = grass_data,
-                                     factor = factor)
-        
-        f.grass_compute_potential(grass_data = grass_data,
-                              gisdb = PATH,
-                              location = loc,
-                              mapset = "potential",
-                              create_opts = "")
-        
-        ds = gdal.Open(os.path.join(PATH,'%s.tif' % grass_data['energy']))
-    
-        f.quantile_colors(array = ds.ReadAsArray(),
-                          output_suitable =  os.path.join(OUTPUT_DIRECTORY, "{}.tif".format("output")),
-                                        proj=ds.GetProjection(),
-                                        transform=ds.GetGeoTransform(),
-                                        qnumb=6,
-                                        no_data_value=np.nan,
-                                        gtype=gdal.GDT_Byte,
-                                        unit="MWh/year",
-                                        options='compress=DEFLATE TILED=YES '
-                                                'TFW=YES '
-                                                'ZLEVEL=9 PREDICTOR=1')
-#        raster_file_path = 'tests/data/raster_for_test.tif'
-#        # simulate copy from HTAPI to CM
-#        save_path = UPLOAD_DIRECTORY+"/raster_for_test.tif"
-#        copyfile(raster_file_path, save_path)
-#
-#        inputs_raster_selection = {}
-#        inputs_parameter_selection = {}
-#        inputs_vector_selection = {}
-#        inputs_raster_selection["heat_tot_curr_density"]  = save_path
-#        inputs_vector_selection["heating_technologies_eu28"]  = {}
-#        inputs_parameter_selection["reduction_factor"] = 2
-#
-#        # register the calculation module a
-#        payload = {"inputs_raster_selection": inputs_raster_selection,
-#                   "inputs_parameter_selection": inputs_parameter_selection,
-#                   "inputs_vector_selection": inputs_vector_selection}
-#
-#
-#        rv, json = self.client.post('computation-module/compute/', data=payload)
-#
-#        self.assertTrue(rv.status_code == 200)
+
 
 if __name__ == "__main__":
     import doctest
