@@ -22,8 +22,6 @@ logging.basicConfig(format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel("DEBUG")
 
-# set a unit register to convert between units
-ureg = UnitRegistry()
 
 """ Entry point of the calculation module function"""
 
