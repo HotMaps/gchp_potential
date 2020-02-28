@@ -1,10 +1,13 @@
 from osgeo import gdal
 from ..helper import generate_output_file_tif, create_zip_shapefiles
+import logging
 import time
 import warnings
 import os
 import secrets
 import shutil
+from pprint import pprint
+
 import numpy as np
 
 from .my_calculation_module_directory.input_data_function import PATH
@@ -12,13 +15,24 @@ from .my_calculation_module_directory.functions import function_CM as f
 from ..constant import CM_NAME
 
 
+# set a logger
+LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
+              '-35s %(lineno) -5d: %(message)s')
+logging.basicConfig(format=LOG_FORMAT)
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel("DEBUG")
+
+# set a unit register to convert between units
+ureg = UnitRegistry()
+
 """ Entry point of the calculation module function"""
 
 #TODO: CM provider must "change this code"
 #TODO: CM provider must "not change input_raster_selection,output_raster  1 raster input => 1 raster output"
 #TODO: CM provider can "add all the parameters he needs to run his CM
 #TODO: CM provider can "return as many indicators as he wants"
-def calculation(output_directory, inputs_raster_selection, 
+def calculation(output_directory, 
+                inputs_raster_selection, 
                 inputs_parameter_selection):
     #TODO the folowing code must be changed by the code of the calculation module
     
@@ -112,4 +126,6 @@ def calculation(output_directory, inputs_raster_selection,
     
     # remove grass gis directory
     shutil.rmtree(os.path.join(PATH, loc))
+    pprint(result)
+    LOGGER.info(f"Computation result for biomass is: {result}")
     return result

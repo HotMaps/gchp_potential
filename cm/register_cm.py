@@ -7,9 +7,12 @@ import time
 
 from app.api_v1.transactions import register
 
+
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
+logging.basicConfig(format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel("DEBUG")
 
 
 
@@ -33,7 +36,7 @@ def start_runner():
                 LOGGER.info('Server not yet started')
                 time.sleep(2)
 
-    print('Started runner 1')
+    LOGGER.info('Started runner 1')
     start_loop()
 
 

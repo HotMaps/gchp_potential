@@ -6,15 +6,47 @@ import logging
 from app.constant import RPC_CM_ALIVE,CM_ID,CELERY_BROKER_URL
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
+logging.basicConfig(format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel("DEBUG")
 
 queue_name =  RPC_CM_ALIVE + str(CM_ID)
 parameters = pika.URLParameters(str(CELERY_BROKER_URL))
-connection = pika.BlockingConnection(parameters)
 
-channel = connection.channel()
+try:
+    connection = pika.BlockingConnection(parameters)
+except Exception as exc:
+    LOGGER.exception("Failed to pika.BlockConnection >> "
+                     f"queue_name = {queue_name} >> "
+                     f"broaker = {str(CELERY_BROKER_URL)} >> "
+                     f"parameters = {parameters} >> "
+                     f"exception = {exc}"
+                     )
+    raise exc
 
-channel.queue_declare(queue=queue_name)
+try:
+    channel = connection.channel()
+except Exception as exc:
+    LOGGER.exception("Failed to acquire the channel >> "
+                     f"queue_name = {queue_name} >> "
+                     f"broaker = {str(CELERY_BROKER_URL)} >> "
+                     f"parameters = {parameters} >> "
+                     f"connection = {connection} >> "
+                     f"exception = {exc}"
+                     )
+    raise exc
+
+try:
+    channel.queue_declare(queue=queue_name)
+except Exception as exc:
+    LOGGER.exception("Failed to declare queue >> "
+                     f"queue_name = {queue_name} >> "
+                     f"broaker = {str(CELERY_BROKER_URL)} >> "
+                     f"parameters = {parameters} >> "
+                     f"connection = {connection} >> "
+                     f"exception = {exc}"
+                     )
+    raise exc
 
 
 
