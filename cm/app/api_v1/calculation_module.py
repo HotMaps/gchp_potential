@@ -6,6 +6,7 @@ import warnings
 import os
 import secrets
 import shutil
+import subprocess
 from pprint import pprint
 
 import numpy as np
@@ -22,6 +23,31 @@ logging.basicConfig(format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel("DEBUG")
 
+
+def check_rasters(rasters):
+    """Raise a ValueError if the raster file does not exists or
+    if it is not readable by gdalinfo.
+    """
+    for rname, rpath in rasters.items():
+        if not os.path.exists(rpath):
+            raise ValueError(f"The raster layer: {rname} "
+                             f"does not exists in: {rpath}")
+        print(f"The raster layer: {rname} with path: {rpath} exists!")
+        cmd = f"gdalinfo {rpath}"
+        ginfo = subprocess.Popen(cmd, 
+                                 stdout=subprocess.PIPE, 
+                                 stderr=subprocess.PIPE,
+                                 shell=True)
+        rc = ginfo.wait()
+        stdout, stderr = ginfo.communicate()
+        print(f"\n\n===\nexecuted command:\n    $ {cmd}"
+              f"\nreturn code:           {rc}\n---"
+              f"\nstderr:\n{stderr.decode()}\n---"
+              f"\nstdout:\n{stdout.decode()}\n---\n\n")
+        if rc > 0:
+            raise ValueError("gdalinfo is not able to read the raster layer: "
+                             f"{rname} - located in {rpath}, the error is:\n"
+                             f"{stdout}\n===\n")
 
 """ Entry point of the calculation module function"""
 
@@ -79,6 +105,9 @@ def calculation(output_directory,
             "power": "geo_power",
             "energy": "geo_energy"
             }
+    
+    # check raster inputs:
+    check_rasters(rasters)
     
     grass_data = f.create_location(gisdb = PATH,
                                    location = loc, 

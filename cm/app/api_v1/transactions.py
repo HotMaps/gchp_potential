@@ -153,10 +153,10 @@ def compute():
 
 
     }
-    LOGGER.info("type response ",type(response))
+    LOGGER.info(f"type response: {type(response)}")
     # convert response dict to json
     response = json.dumps(response)
-    LOGGER.info('response', response)
+    LOGGER.info(f"response: {response}")
     return response
 
 
