@@ -53,18 +53,21 @@ def create_grass_data(grass_data, factor):
     return grass_data
 
 
-def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts):
+def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts, enrg_output):
     with Session(gisdb= gisdb, location = location , mapset= mapset,
                  create_opts = create_opts):
         print(f"Compute GCHP potential: {grass_data}")
         gcore.run_command("g.region", raster=grass_data["ground_temp_raster"])
         gcore.run_command('r.green.gshp.theoretical', **grass_data)
         gcore.run_command('r.out.gdal', input=grass_data['energy'],
-                          output=os.path.join(gisdb,
-                                              '%s.tif' % grass_data['energy']),
+                          output=enrg_output,
                           format='GTiff', flags='c',
                           createopt="COMPRESS=DEFLATE",
+                          nodata=-99999,
                           overwrite=True)
+        if not os.path.exists(enrg_output):
+            print("ERROR r.out.gdal: Not able to export the raster file: "
+                  f"{grass_data['energy']} to: {enrg_output}")
                           
 
 def quantile_colors(array, output_suitable, proj, transform,

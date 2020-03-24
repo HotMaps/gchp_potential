@@ -7,6 +7,7 @@ import os
 import secrets
 import shutil
 import subprocess
+import pathlib
 from pprint import pprint
 
 import numpy as np
@@ -104,9 +105,13 @@ def calculation(output_directory,
     if factor["borehole_resistence"] == "None":
         factor["borehole_resistence"] = "nan"
 
+    powr_path = pathlib.Path(generate_output_file_tif(output_directory))
+    enrg_path = pathlib.Path(generate_output_file_tif(output_directory))
+    powr_name = "power_" + powr_path.name[:-4].replace("-", "")
+    enrg_name = "energy_" + enrg_path.name[:-4].replace("-", "")
     grass_data = {
-            "power": "geo_power",
-            "energy": "geo_energy"
+            "power": powr_name,
+            "energy": enrg_name,
             }
     
     # check raster inputs:
@@ -127,10 +132,11 @@ def calculation(output_directory,
                               gisdb = PATH,
                               location = loc,
                               mapset = "potential",
-                              create_opts = "")
+                              create_opts = "",
+                              enrg_output = enrg_path)
     
     
-    ds = gdal.Open(os.path.join(PATH,'%s.tif' % grass_data['energy']))
+    ds = gdal.Open(str(enrg_path))
     
     symbology = f.quantile_colors(array = ds.ReadAsArray(),
                                    output_suitable =  output_raster1,
@@ -156,6 +162,8 @@ def calculation(output_directory,
     
     # remove grass gis directory
     shutil.rmtree(os.path.join(PATH, loc))
+    # remove temporary generated file
+    os.remove(enrg_path)
     pprint(result)
     LOGGER.info(f"Computation result for biomass is: {result}")
     return result
