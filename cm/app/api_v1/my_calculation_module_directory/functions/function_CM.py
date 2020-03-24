@@ -27,8 +27,6 @@ def create_gis_db(path):
 
     
 def create_location(gisdb, location, rasters, vectors, grass_data):
-
-    
     with Session(gisdb = gisdb, location = location,
                  create_opts=rasters['ground_temp_raster']):
         # import file
@@ -50,17 +48,15 @@ def create_location(gisdb, location, rasters, vectors, grass_data):
     
     
 def create_grass_data(grass_data, factor):
-    for fac in list(factor.keys()):
-        grass_data[fac] = factor[fac]
-    
+    for fkey, fvalue in factor.items():
+        grass_data[fkey] = fvalue
     return grass_data
 
-def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts):
 
-    
+def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts):
     with Session(gisdb= gisdb, location = location , mapset= mapset,
                  create_opts = create_opts):
-        
+        print(f"Compute GCHP potential: {grass_data}")
         gcore.run_command("g.region", raster=grass_data["ground_temp_raster"])
         gcore.run_command('r.green.gshp.theoretical', **grass_data)
         gcore.run_command('r.out.gdal', input=grass_data['energy'],
