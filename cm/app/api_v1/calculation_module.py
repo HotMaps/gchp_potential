@@ -101,7 +101,7 @@ def calculation(output_directory,
               "lifetime" :inputs_parameter_selection["lifetime"]      
               }
     
-    if factor["borehole_resistence"] is None:
+    if factor["borehole_resistence"] == "None":
         factor["borehole_resistence"] = "nan"
 
     grass_data = {
