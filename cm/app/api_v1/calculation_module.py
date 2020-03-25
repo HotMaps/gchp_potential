@@ -41,11 +41,11 @@ def check_rasters(rasters):
                                  shell=True)
         rc = ginfo.wait()
         stdout, stderr = ginfo.communicate()
-        print(f"\n\n===\nexecuted command:\n    $ {cmd}"
-              f"\nreturn code:           {rc}\n---"
-              f"\nstderr:\n{stderr.decode()}\n---"
-              f"\nstdout:\n{stdout.decode()}\n---\n\n")
         if rc > 0:
+            print(f"\n\n===\nexecuted command:\n    $ {cmd}"
+                  f"\nreturn code:           {rc}\n---"
+                  f"\nstderr:\n{stderr.decode()}\n---"
+                  f"\nstdout:\n{stdout.decode()}\n---\n\n")
             raise ValueError("gdalinfo is not able to read the raster layer: "
                              f"{rname} - located in {rpath}, the error is:\n"
                              f"{stdout}\n===\n")
@@ -164,6 +164,6 @@ def calculation(output_directory,
     shutil.rmtree(os.path.join(PATH, loc))
     # remove temporary generated file
     os.remove(enrg_path)
+    print("GCHP result payload:")
     pprint(result)
-    LOGGER.info(f"Computation result for biomass is: {result}")
     return result
