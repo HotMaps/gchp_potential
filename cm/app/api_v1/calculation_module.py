@@ -143,7 +143,7 @@ def calculation(output_directory,
                                         proj=ds.GetProjection(),
                                         transform=ds.GetGeoTransform(),
                                         qnumb=6,
-                                        no_data_value=np.nan,
+                                        no_data_value=-99999,
                                         gtype=gdal.GDT_Byte,
                                         unit="MWh/year",
                                         options='compress=DEFLATE TILED=YES '
