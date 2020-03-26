@@ -15,7 +15,7 @@ from osgeo import gdal
 
 
 
-CLRS_SUN = "#F19B03 #F6B13D #F9C774 #FDDBA3 #FFF0CE".split()
+CLRS_SUN = "#F19B03 #F6B13D #F9C774 #FDDBA3 #FFF0CE".split()[::-1]
 CMAP_SUN = colors.LinearSegmentedColormap.from_list('solar', CLRS_SUN)
 
 
