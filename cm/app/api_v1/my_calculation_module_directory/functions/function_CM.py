@@ -15,7 +15,7 @@ from osgeo import gdal
 
 
 
-CLRS_SUN = "#F19B03 #F6B13D #F9C774 #FDDBA3 #FFF0CE".split()
+CLRS_SUN = "#F19B03 #F6B13D #F9C774 #FDDBA3 #FFF0CE".split()[::-1]
 CMAP_SUN = colors.LinearSegmentedColormap.from_list('solar', CLRS_SUN)
 
 
@@ -27,8 +27,6 @@ def create_gis_db(path):
 
     
 def create_location(gisdb, location, rasters, vectors, grass_data):
-
-    
     with Session(gisdb = gisdb, location = location,
                  create_opts=rasters['ground_temp_raster']):
         # import file
@@ -50,25 +48,26 @@ def create_location(gisdb, location, rasters, vectors, grass_data):
     
     
 def create_grass_data(grass_data, factor):
-    for fac in list(factor.keys()):
-        grass_data[fac] = factor[fac]
-    
+    for fkey, fvalue in factor.items():
+        grass_data[fkey] = fvalue
     return grass_data
 
-def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts):
 
-    
+def grass_compute_potential(grass_data, gisdb, location, mapset, create_opts, enrg_output):
     with Session(gisdb= gisdb, location = location , mapset= mapset,
                  create_opts = create_opts):
-        
+        print(f"Compute GCHP potential: {grass_data}")
         gcore.run_command("g.region", raster=grass_data["ground_temp_raster"])
         gcore.run_command('r.green.gshp.theoretical', **grass_data)
         gcore.run_command('r.out.gdal', input=grass_data['energy'],
-                          output=os.path.join(gisdb,
-                                              '%s.tif' % grass_data['energy']),
+                          output=enrg_output,
                           format='GTiff', flags='c',
                           createopt="COMPRESS=DEFLATE",
+                          nodata=-99999,
                           overwrite=True)
+        if not os.path.exists(enrg_output):
+            print("ERROR r.out.gdal: Not able to export the raster file: "
+                  f"{grass_data['energy']} to: {enrg_output}")
                           
 
 def quantile_colors(array, output_suitable, proj, transform,

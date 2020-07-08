@@ -15,9 +15,12 @@ import socket
 from . import calculation_module
 from app import CalculationModuleRpcClient
 
+
 LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
+logging.basicConfig(format=LOG_FORMAT)
 LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel("DEBUG")
 
 
 UPLOAD_DIRECTORY = '/var/tmp'
@@ -25,10 +28,12 @@ if not os.path.exists(UPLOAD_DIRECTORY):
     os.makedirs(UPLOAD_DIRECTORY)
     os.chmod(UPLOAD_DIRECTORY, 0o777)
 
+
 @api.route('/files/<string:filename>', methods=['GET'])
 def get(filename):
     # get file stored in the api directory
     return send_from_directory(UPLOAD_DIRECTORY, filename, as_attachment=True)
+
 
 @api.route('/register/', methods=['POST'])
 def register():
@@ -124,18 +129,17 @@ def compute():
             results: {"response": {"category": "Buildings", "cm_name": "calculation_module_1", "layers_needed": ["heat_density_tot"], "cm_description": "this computation module allows to ....", "cm_url": "http://127.0.0.1:5002/", "cm_id": 1, "inputs_calculation_module": [{"input_min": 1, "input_value": 1, "input_unit": "none", "input_name": "Reduction factor", "cm_id": 1, "input_type": "input", "input_parameter_name": "multiplication_factor", "input_max": 10}, {"input_min": 10, "input_value": 50, "input_unit": "", "input_name": "Blablabla", "cm_id": 1, "input_type": "range", "input_parameter_name": "bla", "input_max": 1000}]}}
              """
 
-    print ('CM will Compute ')
+    LOGGER.info('CM will Compute ')
     data = request.get_json()
 
     #TODO CM Developper do not need to change anything here
     # here is the inputs layers and parameters
     inputs_raster_selection = helper.validateJSON(data["inputs_raster_selection"])
-    print ('inputs_raster_selection', inputs_raster_selection)
     LOGGER.info('inputs_raster_selection', inputs_raster_selection)
 
     # inputs_parameter_selection = helper.validateJSON(data["inputs_parameter_selection"])
+
     inputs_parameter_selection = data["inputs_parameter_selection"]
-    print ('inputs_parameter_selection', inputs_parameter_selection)
     LOGGER.info('inputs_parameter_selection', inputs_parameter_selection)
 
     output_directory = UPLOAD_DIRECTORY
@@ -149,12 +153,10 @@ def compute():
 
 
     }
-
- #   LOGGER.info('response', response)
-
-#    LOGGER.info("type response ",type(response))
+    LOGGER.info(f"type response: {type(response)}")
     # convert response dict to json
     response = json.dumps(response)
+    LOGGER.info(f"response: {response}")
     return response
 
 

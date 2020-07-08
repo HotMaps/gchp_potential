@@ -35,11 +35,21 @@ def load_input():
     Load the input values in the file constant.py
     :return a dictionary with the imput values
     """
-    inputs_parameter = {}
-    for inp in INPUTS_CALCULATION_MODULE:
-        inputs_parameter[inp['input_parameter_name']] = inp['input_value']
+    # inputs_parameter = {}
+    # for inp in INPUTS_CALCULATION_MODULE:
+    #     inputs_parameter[inp['input_parameter_name']] = inp['input_value']
     
-    return inputs_parameter
+    # return inputs_parameter
+    return {'heating_season_value': '180',
+            'ground_capacity_value': '2',
+            'borehole_radius': '0.075',
+            'borehole_resistence': 'None',
+            'borehole_length': '100',
+            'pipe_radius': '0.016',
+            'number_pipes': '4',
+            'grout_conductivity': '4',
+            'fluid_limit_temperature': '-2',
+            'lifetime': '50'}
 
 
 def load_raster():
