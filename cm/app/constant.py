@@ -137,7 +137,7 @@ INPUTS_CALCULATION_MODULE = [
      }
 ]
 
-WIKIURL = os.environ.get("WIKIURL", "https://wiki.hotmaps.hevs.ch/en/")
+WIKIURL = os.environ.get("WIKIURL", "https://wiki.hotmaps.eu/en/")
 
 SIGNATURE = {
 
