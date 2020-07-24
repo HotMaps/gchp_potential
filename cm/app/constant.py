@@ -155,12 +155,8 @@ SIGNATURE = {
          "description": "Ground conductivity [W/m/K]"},
     ],
     "cm_url": "Do not add something",
-    "cm_description": "This module aims to compute the Ground Source"
-                      "Heat Pump (GSHP) potential of a selected area."
-                      "It is based on the GRASS-GISS module "
-                      "r.green.gshp.theoretical."
-                      "The code is on Hotmaps Github group and has"
-                      " been developed by EURAC",
+    "cm_description": """This module aims to compute the Ground Source Heat Pump (GSHP) potential of a selected area. 
+    It is based on the GRASS-GISS module r.green.gshp.theoretical. The code has been developed by EURAC""",
     "cm_id": CM_ID,
     "wiki_url": WIKIURL + "CM-Shallow-geothermal-potential",
     'inputs_calculation_module': INPUTS_CALCULATION_MODULE
