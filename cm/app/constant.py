@@ -142,7 +142,7 @@ WIKIURL = os.environ.get("WIKIURL", "https://wiki.hotmaps.eu/en/")
 SIGNATURE = {
 
     "category": "Supply",
-    "authorized_scale":["NUTS 3", "NUTS 2", "NUTS 1", "NUTS 0", "LAU 2", "Hectare"],
+    "authorized_scale":["NUTS 3", "NUTS 2", "NUTS 1", "NUTS 0", "LAU 2"],
     "cm_name": CM_NAME,
     "layers_needed": [
         "land_surface_temperature", "ground_conductivity",
