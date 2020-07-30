@@ -178,10 +178,19 @@ def calculation(output_directory, inputs_raster_selection, inputs_parameter_sele
     result["raster_layers"] = res
     result["indicator"] = [
         {
+            "unit": "INFO",
+            "name": (
+                "If you see holes in the generated raster map, please "
+                "consider to visualize the layer: geothermal potential heat "
+                "conductivity, this layer is used as an input from this CM."
+            ),
+            "value": "",
+        },
+        {
             "unit": "MWh/yr",
             "name": f"Average energy that can be extracted per GCHP system is of: {amean:.3f} +/- {astd:.3f}",
             "value": amean,
-        }
+        },
     ]
 
     # remove grass gis directory
