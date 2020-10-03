@@ -87,6 +87,7 @@ def calculation(output_directory, inputs_raster_selection, inputs_parameter_sele
         "ground_temp_raster": inputs_raster_selection["land_surface_temperature"],
         "ground_conductivity": inputs_raster_selection["ground_conductivity"],
     }
+    print(rasters)
 
     # retrieve the inputs layes
     vectors = {
