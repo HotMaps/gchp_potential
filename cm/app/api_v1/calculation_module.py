@@ -87,6 +87,7 @@ def calculation(output_directory, inputs_raster_selection, inputs_parameter_sele
         "ground_temp_raster": inputs_raster_selection["land_surface_temperature"],
         "ground_conductivity": inputs_raster_selection["ground_conductivity"],
     }
+    print(rasters)
 
     # retrieve the inputs layes
     vectors = {
@@ -168,7 +169,7 @@ def calculation(output_directory, inputs_raster_selection, inputs_parameter_sele
     ]
 
     arr = ds.ReadAsArray()
-    valid = arr != no_data_value
+    valid = arr > 0
 
     avalid = arr[valid]
     amean = avalid.mean()
@@ -188,7 +189,7 @@ def calculation(output_directory, inputs_raster_selection, inputs_parameter_sele
         },
         {
             "unit": "MWh/yr",
-            "name": f"Average energy that can be extracted per GCHP system is of: {amean:.3f} +/- {astd:.3f}",
+            "name": f"Average energy that can be extracted per single GCHP system is of: {amean:.3f} +/- {astd:.3f}",
             "value": amean,
         },
     ]
