@@ -6,7 +6,7 @@ click==7.1.2
 coverage==5.3
 cycler==0.10.0
 flasgger==0.9.5
-Flask==1.1.2
+Flask==2.2.5
 Flask-HTTPAuth==4.1.0
 Flask-SQLAlchemy==2.4.4
 GDAL==2.2.2
